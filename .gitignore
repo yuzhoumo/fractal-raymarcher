@@ -39,6 +39,7 @@ CMakeSettings.json
 *.out
 *.app
 build
+result
 xcode
 
 # Neovim
