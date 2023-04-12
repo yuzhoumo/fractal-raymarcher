@@ -14,7 +14,7 @@ git clone git@github.com:yuzhoumo/fractal-raymarcher.git --recursive
 Note: If using NixOS, there is no need for the `--recursive` flag since
 dependencies are pulled from nix-store.
 
-### Build using CMake:
+## Building with CMake
 
 ```
 mkdir build && cd build
@@ -22,12 +22,12 @@ cmake ..
 make
 ```
 
-### Building on NixOS
+## Building with Nix
 
-On NixOS, you can build by running `nix-build` or entering the build
-environment using `nix-shell` and following the CMake build instructions.
-When building using `nix-build`, the resulting binary can be run using
-`./result/bin/fmarch`.
+On NixOS, you can build by running `nix-build` in the main project directory
+or entering the build environment using `nix-shell` and following the CMake
+build instructions. When building using `nix-build`, the resulting binary can
+be run with `./result/bin/fmarch` in the same directory.
 
 ## Usage
 
