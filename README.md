@@ -29,4 +29,5 @@ make
 
 - [GLFW](https://github.com/glfw/glfw)
 - [GLAD](https://github.com/Dav1dde/glad)
+- [GLM](https://github.com/g-truc/glm)
 - [CMake](http://www.cmake.org/)
