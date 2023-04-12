@@ -7,7 +7,7 @@
 #include "constants.h"
 
 /* initialize GLAD and GLFW, then create window object */
-void createGLcontexts(GLFWwindow **window) {
+void createGLcontexts(GLFWwindow*& window) {
   glfwInit();
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -19,15 +19,15 @@ void createGLcontexts(GLFWwindow **window) {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   #endif
 
-  *window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE,
+  window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE,
                                NULL, NULL);
-  if (*window == NULL) {
+  if (window == NULL) {
     std::cout << "Failed to create GLFW window" << std::endl;
     glfwTerminate();
     exit(EXIT_FAILURE);
   }
 
-  glfwMakeContextCurrent(*window);
+  glfwMakeContextCurrent(window);
 
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     std::cout << "Failed to initialize GLAD" << std::endl;
@@ -38,21 +38,21 @@ void createGLcontexts(GLFWwindow **window) {
 }
 
 /* called in main render loop */
-void render(GLFWwindow *window) {
+void render(GLFWwindow*& window) {
   glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_ACCUM_BUFFER_BIT);
 }
 
 /* clean up objects and exit */
-void cleanup(GLFWwindow *window) {
+void cleanup(GLFWwindow*& window) {
   glfwDestroyWindow(window);
   glfwTerminate();
   exit(EXIT_SUCCESS);
 }
 
 int main() {
-  GLFWwindow *window;
-  createGLcontexts(&window);
+  GLFWwindow* window;
+  createGLcontexts(window);
   window_callbacks::setGLFWcallbacks(window);
 
   /* main render loop */
