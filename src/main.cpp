@@ -21,7 +21,7 @@ void createGLcontexts(GLFWwindow **window) {
 
   *window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE,
                                NULL, NULL);
-  if (window == NULL) {
+  if (*window == NULL) {
     std::cout << "Failed to create GLFW window" << std::endl;
     glfwTerminate();
     exit(EXIT_FAILURE);
