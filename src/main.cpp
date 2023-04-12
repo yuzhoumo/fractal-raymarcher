@@ -8,20 +8,19 @@
 
 /* initialize GLAD and GLFW, then create window object */
 void createGLcontexts(GLFWwindow*& window) {
-  glfwInit();
+  if (!glfwInit()) {
+    std::cout << "Failed to initialize GLFW" << std::endl;
+    exit(EXIT_FAILURE);
+  }
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  #ifdef __APPLE__
-    /* set compatability mode for macOS */
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-  #endif
-
   window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE,
-                               NULL, NULL);
-  if (window == NULL) {
+                               nullptr, nullptr);
+  if (window == nullptr) {
     std::cout << "Failed to create GLFW window" << std::endl;
     glfwTerminate();
     exit(EXIT_FAILURE);
@@ -40,7 +39,7 @@ void createGLcontexts(GLFWwindow*& window) {
 /* called in main render loop */
 void render(GLFWwindow*& window) {
   glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_ACCUM_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT);
 }
 
 /* clean up objects and exit */
@@ -52,8 +51,12 @@ void cleanup(GLFWwindow*& window) {
 
 int main() {
   GLFWwindow* window;
+
+  glfwSetErrorCallback(window_callbacks::error);
+
   createGLcontexts(window);
-  window_callbacks::setGLFWcallbacks(window);
+  glfwSetFramebufferSizeCallback(window, window_callbacks::framebufferSize);
+  glfwSetKeyCallback(window, window_callbacks::key);
 
   /* main render loop */
   while(!glfwWindowShouldClose(window)) {

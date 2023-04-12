@@ -6,7 +6,7 @@
 namespace window_callbacks {
 
 void error(int error, const char *description) {
-  fputs(description, stderr);
+  std::cout << description << std::endl;
 }
 
 void key(GLFWwindow *window, int key, int scancode, int action, int mods) {
@@ -16,12 +16,6 @@ void key(GLFWwindow *window, int key, int scancode, int action, int mods) {
 
 void framebufferSize(GLFWwindow* window, int width, int height) {
   glViewport(0, 0, width, height);
-}
-
-void setGLFWcallbacks(GLFWwindow *window) {
-  glfwSetErrorCallback(window_callbacks::error);
-  glfwSetKeyCallback(window, window_callbacks::key);
-  glfwSetFramebufferSizeCallback(window, window_callbacks::framebufferSize);
 }
 
 } /* namespace window_callbacks */
