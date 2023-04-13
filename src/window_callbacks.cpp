@@ -6,7 +6,7 @@
 namespace window_callbacks {
 
 void error(int error, const char *description) {
-  std::cout << description << std::endl;
+  std::cerr << description << std::endl;
 }
 
 void key(GLFWwindow *window, int key, int scancode, int action, int mods) {
