@@ -1,7 +1,7 @@
 #include <iostream>
 #include <glad/glad.h>
 
-#include "window_callbacks.h"
+#include "include/window_callbacks.hpp"
 
 namespace window_callbacks {
 
