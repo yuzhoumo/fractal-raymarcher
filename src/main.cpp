@@ -12,7 +12,7 @@
 #include "include/constants.hpp"
 #include "include/shader.hpp"
 
-/* initialize GLAD and GLFW, then create window object */
+/* initialize GLAD and GLFW, then create window object and set callbacks */
 void createGLcontexts(GLFWwindow*& window) {
   if (!glfwInit()) {
     std::cerr << "ERROR::GLFW_INITIALIZATION_FAILURE" << std::endl;
@@ -24,6 +24,9 @@ void createGLcontexts(GLFWwindow*& window) {
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+  /* set error callback before window creation */ 
+  glfwSetErrorCallback(callbacks::error);
+
   window = glfwCreateWindow(WINDOW_DEFAULT_WIDTH, WINDOW_DEFAULT_HEIGHT,
                             WINDOW_TITLE, nullptr, nullptr);
   if (nullptr == window) {
@@ -34,12 +37,22 @@ void createGLcontexts(GLFWwindow*& window) {
 
   glfwMakeContextCurrent(window);
 
+  /* set glfw callback functions */
+  glfwSetFramebufferSizeCallback(window, callbacks::framebufferSize);
+  glfwSetKeyCallback(window, callbacks::key);
+  glfwSetCursorPosCallback(window, callbacks::cursorPos);
+  glfwSetScrollCallback(window, callbacks::scroll);
+
+  /* hide mouse cursor */
+  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     std::cerr << "ERROR::GLAD_INITIALIZATION_FAILURE" << std::endl;
     exit(EXIT_FAILURE);
   }
 
   glViewport(0, 0, WINDOW_DEFAULT_WIDTH, WINDOW_DEFAULT_HEIGHT);
+  glEnable(GL_DEPTH_TEST); /* enable z-buffer */
 }
 
 /* clean up objects and exit */
@@ -56,20 +69,14 @@ int main(const int argc, const char* argv[]) {
     exit(EXIT_FAILURE);
   }
 
-  /* setup window and callbacks */
-  GLFWwindow* window;
+  /* setup display singleton */
   Display& display = Display::getInstance();
   display.camera = Camera{};
   display.updateProjectionMatrix();
 
-  glfwSetErrorCallback(callbacks::error);
+  /* setup glfw window and callbacks */
+  GLFWwindow* window;
   createGLcontexts(window);
-  glfwSetFramebufferSizeCallback(window, callbacks::framebufferSize);
-  glfwSetKeyCallback(window, callbacks::key);
-  glfwSetCursorPosCallback(window, callbacks::cursorPos);
-  glfwSetScrollCallback(window, callbacks::scroll);
-  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-  glEnable(GL_DEPTH_TEST); /* enable z-buffer */
 
   /* compile shaders */
   std::filesystem::path vert_shader_path(argv[1]);
@@ -197,4 +204,3 @@ int main(const int argc, const char* argv[]) {
 
   cleanup(window, EXIT_SUCCESS);
 }
-

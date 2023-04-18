@@ -4,7 +4,7 @@
 
 Camera::Camera(glm::vec3 world_up, glm::vec3 position, float yaw, float pitch):
       _front(CAMERA_DEFAULT_FRONT),
-      _movement_speed(CAMERA_DEFAULT_MOVEMENT_SPEED),
+      _move_sensitivity(CAMERA_DEFAULT_MOVEMENT_SPEED),
       _view_sensitivity(CAMERA_DEFAULT_VIEW_SENSITIVITY),
       _fov(CAMERA_DEFAULT_FOV) {
   _world_up = world_up;
@@ -23,7 +23,7 @@ float Camera::getFOV() const {
 }
 
 void Camera::updatePosition(CameraDirection cd, float delta_time) {
-  float speed = _movement_speed * delta_time;
+  float speed = _move_sensitivity * delta_time;
   if (cd == FORWARD)  _position += _front * speed;
   if (cd == BACKWARD) _position -= _front * speed;
   if (cd == LEFT)     _position -= _right * speed;

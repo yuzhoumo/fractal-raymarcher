@@ -8,9 +8,11 @@
 
 #include <GLFW/glfw3.h>
 
-/* Display is a singleton class used to store and update data required by glfw
- * callback functions. */
-
+/* `Display` is a singleton class used to store and update data required by
+ * glfw callback functions. Because glfw takes static functions as callbacks,
+ * we provide additional data through this singleton instead of polluting
+ * global namespace with variables.
+ */
 class Display {
 public:
   static Display& getInstance() {
@@ -39,7 +41,21 @@ public:
                   display.window_width / display.window_height, 0.1f, 100.0f);
   }
 
-  /* update time values given the current time */
+  /* update the window width and height */
+  static inline void updateWindowSize(float width, float height) {
+    Display& display = Display::getInstance();
+    display.window_width = width;
+    display.window_height = height;
+  }
+
+  /* update previous mouse position */
+  static inline void updateMousePos(float xpos, float ypos) {
+    Display& display = Display::getInstance();
+    display.prev_mouse_x = xpos;
+    display.prev_mouse_y = ypos;
+  }
+
+  /* update time values based on current time */
   static inline void updateTime(float curr_time) {
     Display& display = Display::getInstance();
     display.delta_time = curr_time - display.prev_time;

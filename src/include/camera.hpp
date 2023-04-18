@@ -38,8 +38,8 @@ public:
   void updateFOV(float offset);
 
 private:
-  float _movement_speed;    /* how fast the camera moves */
-  float _view_sensitivity;  /* corresponds to mouse input sensitivity */
+  float _move_sensitivity;  /* scales how fast the camera position moves */
+  float _view_sensitivity;  /* scales how fast the camera view moves */
 
   float _pitch;             /* vertical tilt in degrees */
   float _yaw;               /* horizontal tilt in degrees */

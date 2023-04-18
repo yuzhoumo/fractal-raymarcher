@@ -17,26 +17,23 @@ void key(GLFWwindow* window, int key, int scancode, int action, int mods) {
 }
 
 void cursorPos(GLFWwindow* window, double xpos, double ypos) {
-  Display& display = Display::getInstance();
-
   float x = static_cast<float>(xpos);
   float y = static_cast<float>(ypos);
 
-  /* to prevent camera view jerk on first mouse entry, set previous mouse
+  Display& display = Display::getInstance();
+
+  /* to prevent camera jerking on first mouse entry, set previous mouse
    * coordinates to the current mouse position */
   if (display.is_first_mouse_input) {
     display.is_first_mouse_input = false;
-    display.prev_mouse_x = x;
-    display.prev_mouse_y = y;
+    display.updateMousePos(x, y);
   }
 
   /* dy reversed since y is bottom-to-top */
   float dx = x - display.prev_mouse_x;
   float dy = display.prev_mouse_y - y;
 
-  display.prev_mouse_x = x;
-  display.prev_mouse_y = y;
-
+  display.updateMousePos(x, y);
   display.camera.updateView(dx, dy);
 }
 
@@ -49,8 +46,7 @@ void scroll(GLFWwindow* window, double xoffset, double yoffset) {
 void framebufferSize(GLFWwindow* window, int width, int height) {
   Display& display = Display::getInstance();
   glViewport(0, 0, width, height);
-  display.window_width = width;
-  display.window_height = height;
+  display.updateWindowSize(width, height);
   display.updateProjectionMatrix();
 }
 
