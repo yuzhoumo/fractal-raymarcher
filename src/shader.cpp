@@ -5,9 +5,9 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "include/shader.hpp"
 
-Shader::Shader(const std::string& vertexShaderPath,
-               const std::string& fragmentShaderPath) {
-  _id = buildProgram(vertexShaderPath, fragmentShaderPath);
+Shader::Shader(const std::string& vertex_shader_path,
+               const std::string& fragment_shader_path) {
+  _id = buildProgram(vertex_shader_path, fragment_shader_path);
 }
 
 void Shader::use() const {
@@ -41,40 +41,39 @@ void Shader::setMat4(const std::string &name, glm::mat4 value) const {
                      glm::value_ptr(value));
 }
 
-GLuint Shader::buildProgram(const std::string& vertexShaderPath,
-                            const std::string& fragmentShaderPath) {
+GLuint Shader::buildProgram(const std::string& vertex_shader_path,
+                            const std::string& fragment_shader_path) {
   /* compile shaders */
-  GLuint vertexShader, fragmentShader;
-  vertexShader = compile(vertexShaderPath, ShaderType::VERTEX_SHADER);
+  GLuint vertex_shader, fragment_shader;
+  vertex_shader = compile(vertex_shader_path, ShaderType::VERTEX_SHADER);
 
-  if (0 == vertexShader) {
+  if (0 == vertex_shader) {
     std::cerr << "ERROR::VERTEX_SHADER_COMPILATION_FAILURE" << std::endl;
     return 0;
   }
 
-  fragmentShader = compile(fragmentShaderPath, ShaderType::FRAGMENT_SHADER);
-  if (0 == fragmentShader) {
+  fragment_shader = compile(fragment_shader_path, ShaderType::FRAGMENT_SHADER);
+  if (0 == fragment_shader) {
     std::cerr << "ERROR::FRAGMENT_SHADER_COMPILATION_FAILURE" << std::endl;
     return 0;
   }
 
   /* create shader program and link fragment shader */
-  GLuint shaderProgram = glCreateProgram();
-  glAttachShader(shaderProgram, vertexShader);
-  glAttachShader(shaderProgram, fragmentShader);
-  glLinkProgram(shaderProgram);
-  if (-1 == checkCompileErrors(shaderProgram, ShaderType::SHADER_PROGRAM))
+  GLuint shader_program = glCreateProgram();
+  glAttachShader(shader_program, vertex_shader);
+  glAttachShader(shader_program, fragment_shader);
+  glLinkProgram(shader_program);
+  if (-1 == checkCompileErrors(shader_program, ShaderType::SHADER_PROGRAM))
     return 0;
 
   /* clean up shader objects */
-  glDeleteShader(vertexShader);
-  glDeleteShader(fragmentShader);
+  glDeleteShader(vertex_shader);
+  glDeleteShader(fragment_shader);
 
-  return shaderProgram;
+  return shader_program;
 }
 
-GLuint Shader::compile(const std::string& shaderPath,
-                       const ShaderType type) {
+GLuint Shader::compile(const std::string& shader_path, const ShaderType type) {
   /* create shader */
   GLuint shader;
   if (ShaderType::FRAGMENT_SHADER == type) {
@@ -88,23 +87,23 @@ GLuint Shader::compile(const std::string& shaderPath,
   }
 
   /* read shader source code from path */
-  std::string shaderCode;
-  std::ifstream shaderFile;
-  shaderFile.exceptions (std::ifstream::failbit | std::ifstream::badbit);
+  std::string shader_code;
+  std::ifstream shader_file;
+  shader_file.exceptions (std::ifstream::failbit | std::ifstream::badbit);
 
   try {
     std::stringstream stream;
-    shaderFile.open(shaderPath);
-    stream << shaderFile.rdbuf();
-    shaderFile.close();
-    shaderCode = stream.str();
+    shader_file.open(shader_path);
+    stream << shader_file.rdbuf();
+    shader_file.close();
+    shader_code = stream.str();
   } catch(std::ifstream::failure e) {
     std::cerr << "ERROR::SHADER::FILE_READ_FAILURE" << std::endl;
   }
 
   /* compile fragment shader */
-  const char* shaderCodeCstr = shaderCode.c_str();
-  glShaderSource(shader, 1, &shaderCodeCstr, nullptr);
+  const char* shader_code_c_str = shader_code.c_str();
+  glShaderSource(shader, 1, &shader_code_c_str, nullptr);
   glCompileShader(shader);
   if (-1 == checkCompileErrors(shader, type)) 
     return 0;
@@ -113,20 +112,20 @@ GLuint Shader::compile(const std::string& shaderPath,
 }
 
 int Shader::checkCompileErrors(const GLuint shader, const ShaderType type) {
-  GLint success; GLchar infoLog[1024];
-  std::string errMsg;
+  GLint success; GLchar info_log[1024];
+  std::string err_msg;
 
   if (ShaderType::SHADER_PROGRAM == type) {
     glGetProgramiv(shader, GL_LINK_STATUS, &success);
-    errMsg = "ERROR::SHADER_PROGRAM_LINKING_ERROR";
+    err_msg = "ERROR::SHADER_PROGRAM_LINKING_ERROR";
   } else {
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    errMsg = "ERROR::SHADER_COMPILATION_ERROR";
+    err_msg = "ERROR::SHADER_COMPILATION_ERROR";
   }
 
   if (success) return 0;
 
-  glGetProgramInfoLog(shader, 1024, nullptr, infoLog);
-  std::cerr << infoLog << std::endl;
+  glGetProgramInfoLog(shader, 1024, nullptr, info_log);
+  std::cerr << info_log << std::endl;
   return -1;
 }

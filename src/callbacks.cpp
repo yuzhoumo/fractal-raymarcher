@@ -22,14 +22,17 @@ void cursorPos(GLFWwindow* window, double xpos, double ypos) {
   float x = static_cast<float>(xpos);
   float y = static_cast<float>(ypos);
 
+  /* to prevent camera view jerk on first mouse entry, set previous mouse
+   * coordinates to the current mouse position */
   if (display.is_first_mouse_input) {
     display.is_first_mouse_input = false;
     display.prev_mouse_x = x;
     display.prev_mouse_y = y;
   }
 
+  /* dy reversed since y is bottom-to-top */
   float dx = x - display.prev_mouse_x;
-  float dy = display.prev_mouse_y - y; /* reversed since y bottom-to-top */
+  float dy = display.prev_mouse_y - y;
 
   display.prev_mouse_x = x;
   display.prev_mouse_y = y;

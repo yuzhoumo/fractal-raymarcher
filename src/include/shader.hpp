@@ -5,18 +5,15 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
-enum ShaderType {
-  VERTEX_SHADER,
-  FRAGMENT_SHADER,
-  SHADER_PROGRAM
-};
+/* enum for denoting types during shader compilation and error checking */
+enum ShaderType { VERTEX_SHADER, FRAGMENT_SHADER, SHADER_PROGRAM };
 
 class Shader {
 public:
 
   /* constructor: reads shader sources and builds */
-  Shader(const std::string& vertexShaderPath,
-         const std::string& fragmentShaderPath);
+  Shader(const std::string& vertex_shader_path,
+         const std::string& fragment_shader_path);
 
   /* activate shader */
   void use() const;
@@ -37,12 +34,12 @@ private:
 
   /* create shader program from paths of the fragment shader and vertex
    * shader source GLSL files */
-  static GLuint buildProgram(const std::string& vertexShaderPath,
-                             const std::string& fragmentShaderPath);
+  static GLuint buildProgram(const std::string& vertex_shader_path,
+                             const std::string& fragment_shader_path);
 
   /* compile shader of type LOADER_TYPE_VERT_SHADER or LOADER_TYPE_FRAG_SHADER
    * given the path to the shader source GLSL file */
-  static GLuint compile(const std::string& shaderPath, const ShaderType type);
+  static GLuint compile(const std::string& shader_path, const ShaderType type);
 
   /* private method for checking shader compilation errors */
   static int checkCompileErrors(const GLuint shader, const ShaderType type);

@@ -15,8 +15,8 @@
 #define CAMERA_DEFAULT_VIEW_SENSITIVITY  0.1f
 #define CAMERA_DEFAULT_FOV              45.0f
 
-const glm::vec3 CAMERA_DEFAULT_POSITION{ 0.0f,  0.0f,  0.0f };
-const glm::vec3 CAMERA_DEFAULT_WORLD_UP{ 0.0f,  1.0f,  0.0f };
-const glm::vec3 CAMERA_DEFAULT_FRONT   { 0.0f,  0.0f, -1.0f };
+const glm::vec3 CAMERA_DEFAULT_POSITION { 0.0f,  0.0f,  0.0f };
+const glm::vec3 CAMERA_DEFAULT_WORLD_UP { 0.0f,  1.0f,  0.0f };
+const glm::vec3 CAMERA_DEFAULT_FRONT    { 0.0f,  0.0f, -1.0f };
 
 #endif /* ifndef CONSTANTS_H */

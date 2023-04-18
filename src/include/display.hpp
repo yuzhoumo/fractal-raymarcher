@@ -18,6 +18,7 @@ public:
     return instance;
   }
 
+  /* update camera based on current display values and user input */
   static inline void updateCamera(GLFWwindow* window) {
     Display& display = Display::getInstance();
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -30,6 +31,7 @@ public:
       display.camera.updatePosition(RIGHT, display.delta_time);
   }
 
+  /* update projection matrix using current display values */
   static inline void updateProjectionMatrix() {
     Display& display = Display::getInstance();
     display.projection_matrix = glm::perspective(
@@ -37,6 +39,7 @@ public:
                   display.window_width / display.window_height, 0.1f, 100.0f);
   }
 
+  /* update time values given the current time */
   static inline void updateTime(float curr_time) {
     Display& display = Display::getInstance();
     display.delta_time = curr_time - display.prev_time;
@@ -50,16 +53,20 @@ public:
   Camera camera;
   glm::mat4 projection_matrix;
 
+  /* track height and width of the window */
   float window_width = WINDOW_DEFAULT_WIDTH;
   float window_height = WINDOW_DEFAULT_HEIGHT;
 
-  bool is_first_mouse_input = false;
+  /* track if it's the first mouse input */
+  bool is_first_mouse_input = true;
+
+  /* previous mouse coordinates, default to center of window */
   float prev_mouse_x = WINDOW_DEFAULT_WIDTH / 2.0f;
   float prev_mouse_y = WINDOW_DEFAULT_HEIGHT / 2.0f;
 
-  float time = 0.0f;
-  float prev_time = 0.0f;
-  float delta_time = 0.0f;
+  float time = 0.0f;        /* time at the current frame */
+  float prev_time = 0.0f;   /* time at the previous frame */
+  float delta_time = 0.0f;  /* time between previous and current frame*/
 
 private:
   Display() {}
