@@ -29,7 +29,7 @@ void cursorPos(GLFWwindow* window, double xpos, double ypos) {
     display.updateMousePos(x, y);
   }
 
-  /* dy reversed since y is bottom-to-top */
+  /* dy reversed since mouse y=0 is at top of window */
   float dx = x - display.prev_mouse_x;
   float dy = display.prev_mouse_y - y;
 
@@ -45,9 +45,9 @@ void scroll(GLFWwindow* window, double xoffset, double yoffset) {
 
 void framebufferSize(GLFWwindow* window, int width, int height) {
   Display& display = Display::getInstance();
-  glViewport(0, 0, width, height);
   display.updateWindowSize(width, height);
   display.updateProjectionMatrix();
+  glViewport(0, 0, width, height);
 }
 
 } /* namespace callbacks */

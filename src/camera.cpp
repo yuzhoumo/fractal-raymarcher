@@ -1,10 +1,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "include/camera.hpp"
+#include "include/constants.hpp"
 
 Camera::Camera(glm::vec3 world_up, glm::vec3 position, float yaw, float pitch):
       _front(CAMERA_DEFAULT_FRONT),
-      _move_sensitivity(CAMERA_DEFAULT_MOVEMENT_SPEED),
+      _move_sensitivity(CAMERA_DEFAULT_MOVE_SENSITIVITY),
       _view_sensitivity(CAMERA_DEFAULT_VIEW_SENSITIVITY),
       _fov(CAMERA_DEFAULT_FOV) {
   _world_up = world_up;
@@ -35,13 +36,16 @@ void Camera::updateView(float yaw_offset, float pitch_offset,
   _yaw   += _view_sensitivity * yaw_offset;
   _pitch += _view_sensitivity * pitch_offset;
 
-  if (constrain_pitch) _pitch = glm::clamp(_pitch, -89.0f, 89.0f);
+  if (constrain_pitch)
+    _pitch = glm::clamp(_pitch, CAMERA_MIN_PITCH_DEGREES,
+                                CAMERA_MAX_PITCH_DEGREES);
 
   _updateCamera();
 }
 
 void Camera::updateFOV(float offset) {
-  _fov = glm::clamp(_fov - offset, 1.0f, 120.0f);
+  _fov = glm::clamp(_fov - offset, CAMERA_MIN_FOV_DEGREES,
+                                   CAMERA_MAX_FOV_DEGREES);
 }
 
 void Camera::_updateCamera() {

@@ -34,15 +34,15 @@ private:
 
   /* create shader program from paths of the fragment shader and vertex
    * shader source GLSL files */
-  static GLuint buildProgram(const std::string& vertex_shader_path,
-                             const std::string& fragment_shader_path);
+  static GLuint _buildProgram(const std::string& vertex_shader_path,
+                              const std::string& fragment_shader_path);
 
   /* compile shader of type LOADER_TYPE_VERT_SHADER or LOADER_TYPE_FRAG_SHADER
    * given the path to the shader source GLSL file */
-  static GLuint compile(const std::string& shader_path, const ShaderType type);
+  static GLuint _compile(const std::string& shader_path, const ShaderType type);
 
   /* private method for checking shader compilation errors */
-  static int checkCompileErrors(const GLuint shader, const ShaderType type);
+  static int _checkCompileErrors(const GLuint shader, const ShaderType type);
 };
 
 #endif /* ifndef SHADER_H */

@@ -37,13 +37,11 @@ void createGLcontexts(GLFWwindow*& window) {
 
   glfwMakeContextCurrent(window);
 
-  /* set glfw callback functions */
   glfwSetFramebufferSizeCallback(window, callbacks::framebufferSize);
   glfwSetKeyCallback(window, callbacks::key);
   glfwSetCursorPosCallback(window, callbacks::cursorPos);
   glfwSetScrollCallback(window, callbacks::scroll);
 
-  /* hide mouse cursor */
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
@@ -69,12 +67,11 @@ int main(const int argc, const char* argv[]) {
     exit(EXIT_FAILURE);
   }
 
-  /* setup display singleton */
+  /* populate display singleton before glfw window creation */
   Display& display = Display::getInstance();
   display.camera = Camera{};
   display.updateProjectionMatrix();
 
-  /* setup glfw window and callbacks */
   GLFWwindow* window;
   createGLcontexts(window);
 

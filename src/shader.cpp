@@ -7,7 +7,7 @@
 
 Shader::Shader(const std::string& vertex_shader_path,
                const std::string& fragment_shader_path) {
-  _id = buildProgram(vertex_shader_path, fragment_shader_path);
+  _id = _buildProgram(vertex_shader_path, fragment_shader_path);
 }
 
 void Shader::use() const {
@@ -41,18 +41,18 @@ void Shader::setMat4(const std::string &name, glm::mat4 value) const {
                      glm::value_ptr(value));
 }
 
-GLuint Shader::buildProgram(const std::string& vertex_shader_path,
+GLuint Shader::_buildProgram(const std::string& vertex_shader_path,
                             const std::string& fragment_shader_path) {
   /* compile shaders */
   GLuint vertex_shader, fragment_shader;
-  vertex_shader = compile(vertex_shader_path, ShaderType::VERTEX_SHADER);
+  vertex_shader = _compile(vertex_shader_path, ShaderType::VERTEX_SHADER);
 
   if (0 == vertex_shader) {
     std::cerr << "ERROR::VERTEX_SHADER_COMPILATION_FAILURE" << std::endl;
     return 0;
   }
 
-  fragment_shader = compile(fragment_shader_path, ShaderType::FRAGMENT_SHADER);
+  fragment_shader = _compile(fragment_shader_path, ShaderType::FRAGMENT_SHADER);
   if (0 == fragment_shader) {
     std::cerr << "ERROR::FRAGMENT_SHADER_COMPILATION_FAILURE" << std::endl;
     return 0;
@@ -63,7 +63,7 @@ GLuint Shader::buildProgram(const std::string& vertex_shader_path,
   glAttachShader(shader_program, vertex_shader);
   glAttachShader(shader_program, fragment_shader);
   glLinkProgram(shader_program);
-  if (-1 == checkCompileErrors(shader_program, ShaderType::SHADER_PROGRAM))
+  if (-1 == _checkCompileErrors(shader_program, ShaderType::SHADER_PROGRAM))
     return 0;
 
   /* clean up shader objects */
@@ -73,7 +73,7 @@ GLuint Shader::buildProgram(const std::string& vertex_shader_path,
   return shader_program;
 }
 
-GLuint Shader::compile(const std::string& shader_path, const ShaderType type) {
+GLuint Shader::_compile(const std::string& shader_path, const ShaderType type) {
   /* create shader */
   GLuint shader;
   if (ShaderType::FRAGMENT_SHADER == type) {
@@ -105,13 +105,13 @@ GLuint Shader::compile(const std::string& shader_path, const ShaderType type) {
   const char* shader_code_c_str = shader_code.c_str();
   glShaderSource(shader, 1, &shader_code_c_str, nullptr);
   glCompileShader(shader);
-  if (-1 == checkCompileErrors(shader, type)) 
+  if (-1 == _checkCompileErrors(shader, type))
     return 0;
 
   return shader;
 }
 
-int Shader::checkCompileErrors(const GLuint shader, const ShaderType type) {
+int Shader::_checkCompileErrors(const GLuint shader, const ShaderType type) {
   GLint success; GLchar info_log[1024];
   std::string err_msg;
 
