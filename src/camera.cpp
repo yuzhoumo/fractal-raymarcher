@@ -12,15 +12,55 @@ Camera::Camera(glm::vec3 world_up, glm::vec3 position, float yaw, float pitch):
   _position = position;
   _yaw = yaw;
   _pitch = pitch;
-  _updateCamera();
+  _updateAxes();
+}
+
+float Camera::getMoveSensitivity() const {
+  return _move_sensitivity;
+}
+
+float Camera::getViewSensitivity() const {
+  return _view_sensitivity;
+}
+
+float Camera::getPitch() const {
+  return _pitch;
+}
+
+float Camera::getYaw() const {
+  return _yaw;
+}
+
+float Camera::getFOV() const {
+  return _fov;
+}
+
+glm::vec3 Camera::getRight() const {
+  return _right;
+}
+
+glm::vec3 Camera::getUp() const {
+  return _up;
+}
+
+glm::vec3 Camera::getFront() const {
+  return _front;
+}
+
+glm::vec3 Camera::getPosition() const {
+  return _position;
 }
 
 glm::mat4 Camera::getViewMatrix() const {
   return glm::lookAt(_position, _position + _front, _up);
 }
 
-float Camera::getFOV() const {
-  return _fov;
+void Camera::setMoveSensitivity(float sensitivity) {
+  _move_sensitivity = sensitivity;
+}
+
+void Camera::setViewSensitivity(float sensitivity) {
+  _view_sensitivity = sensitivity;
 }
 
 void Camera::updatePosition(CameraDirection cd, float delta_time) {
@@ -40,7 +80,7 @@ void Camera::updateView(float yaw_offset, float pitch_offset,
     _pitch = glm::clamp(_pitch, CAMERA_MIN_PITCH_DEGREES,
                                 CAMERA_MAX_PITCH_DEGREES);
 
-  _updateCamera();
+  _updateAxes();
 }
 
 void Camera::updateFOV(float offset) {
@@ -48,7 +88,7 @@ void Camera::updateFOV(float offset) {
                                    CAMERA_MAX_FOV_DEGREES);
 }
 
-void Camera::_updateCamera() {
+void Camera::_updateAxes() {
   _front = glm::normalize(glm::vec3(
     cos(glm::radians(_yaw)) * cos(glm::radians(_pitch)),
     sin(glm::radians(_pitch)),

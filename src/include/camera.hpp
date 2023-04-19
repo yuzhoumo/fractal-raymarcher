@@ -15,16 +15,26 @@ public:
          glm::vec3 position = CAMERA_DEFAULT_POSITION,
          float yaw = CAMERA_DEFAULT_YAW, float pitch = CAMERA_DEFAULT_PITCH);
 
-  /* get the camera's current field of view */
+  /* accessor methods for keyboard/moust sensitivity */
+  float getMoveSensitivity() const;
+  float getViewSensitivity() const;
+
+  /* accesor methods for pitch/yaw */
+  float getPitch() const;
+  float getYaw() const;
   float getFOV() const;
 
-  /* get the camera's current view matrix */
+  /* accesor methods for camera axes and position */
+  glm::vec3 getRight() const;
+  glm::vec3 getUp() const;
+  glm::vec3 getFront() const;
+  glm::vec3 getPosition() const;
+
+  /* compute the camera's current view matrix */
   glm::mat4 getViewMatrix() const;
 
-  /* set movement speed > 0.0 */
-  void setMovementSpeed(float speed);
-
-  /* set sensitivity to a value > 0.0 */
+  /* assignment methods for move/view sensitivity */
+  void setMoveSensitivity(float sensitivity);
   void setViewSensitivity(float sensitivity);
 
   /* update camera position given direction and time delta */
@@ -52,7 +62,7 @@ private:
   glm::vec3 _position;      /* camera position in world space */
   glm::vec3 _world_up;      /* up direction of world space */
 
-  void _updateCamera();     /* updates camera vectors */
+  void _updateAxes();       /* updates camera vectors */
 };
 
 #endif /* ifndef CAMERA_HPP */
