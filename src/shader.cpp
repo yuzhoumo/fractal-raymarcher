@@ -30,6 +30,14 @@ void Shader::setFloat(const std::string &name, float value) const {
   glUniform1f(glGetUniformLocation(_id, name.c_str()), value); 
 }
 
+void Shader::setFloat2(const std::string &name, glm::vec2 values) const {
+  glUniform2f(glGetUniformLocation(_id, name.c_str()), values.x, values.y);
+}
+
+void Shader::setFloat3(const std::string &name, glm::vec3 values) const {
+  glUniform3f(glGetUniformLocation(_id, name.c_str()),
+              values.x, values.y, values.z);
+}
 
 void Shader::setFloat4(const std::string &name, glm::vec4 values) const {
   glUniform4f(glGetUniformLocation(_id, name.c_str()),
@@ -42,7 +50,7 @@ void Shader::setMat4(const std::string &name, glm::mat4 value) const {
 }
 
 GLuint Shader::_buildProgram(const std::string& vertex_shader_path,
-                            const std::string& fragment_shader_path) {
+                             const std::string& fragment_shader_path) {
   /* compile shaders */
   GLuint vertex_shader, fragment_shader;
   vertex_shader = _compile(vertex_shader_path, ShaderType::VERTEX_SHADER);
@@ -117,15 +125,16 @@ int Shader::_checkCompileErrors(const GLuint shader, const ShaderType type) {
 
   if (ShaderType::SHADER_PROGRAM == type) {
     glGetProgramiv(shader, GL_LINK_STATUS, &success);
+    glGetProgramInfoLog(shader, 1024, nullptr, info_log);
     err_msg = "ERROR::SHADER_PROGRAM_LINKING_ERROR";
   } else {
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    glGetShaderInfoLog(shader, 1024, nullptr, info_log);
     err_msg = "ERROR::SHADER_COMPILATION_ERROR";
   }
 
   if (success) return 0;
 
-  glGetProgramInfoLog(shader, 1024, nullptr, info_log);
   std::cerr << info_log << std::endl;
   return -1;
 }
