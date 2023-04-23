@@ -32,8 +32,17 @@ be run with `./result/bin/fmarch` in the same directory.
 ## Usage
 
 ```
-./fmarch
+./fmarch vertex_shader_path fragment_shader_path
 ```
+
+| Command                    | Key                |
+| -------------------------- | ------------------ |
+| Exit the program           | `ESC`              |
+| Toggle mouse input         | `M`                |
+| Toggle supersampling       | `P`                |
+| Reload shader files        | `R`                |
+| Move camera position       | `W`, `A`, `S`, `D` |
+| Move camera view direction | (Move the mouse)   |
 
 ## Dependencies
 
