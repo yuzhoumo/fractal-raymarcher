@@ -76,6 +76,12 @@ public:
   /* track if it's the first mouse input */
   bool is_first_mouse_input = true;
 
+  /* track if mouse input is enabled */
+  bool capture_cursor = true;
+
+  /* track if supersampling is enabled */
+  bool supersample = false;
+
   /* previous mouse coordinates, default to center of window */
   float prev_mouse_x = WINDOW_DEFAULT_WIDTH / 2.0f;
   float prev_mouse_y = WINDOW_DEFAULT_HEIGHT / 2.0f;
